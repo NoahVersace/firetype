@@ -7,7 +7,10 @@ import { Router } from "@angular/router";
 
 export class Message {
   text: string;
-  user: User;
+  user: {
+    id: string;
+    name: string;
+  };
   date: any;
 }
 @Component({
