@@ -3,6 +3,7 @@ import { GameService, User } from "../game.service";
 import { HostListener } from "@angular/core";
 import { pipe, Observable } from "rxjs";
 import { AngularFirestore } from "@angular/fire/firestore";
+import { Router } from "@angular/router";
 
 export class Message {
   text: string;
@@ -19,7 +20,8 @@ export class GameComponent implements OnInit {
 
   constructor(
     private gameService: GameService,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -30,8 +32,8 @@ export class GameComponent implements OnInit {
   }
 
   checkAuthentication() {
-    if (this.gameService.user != undefined) {
-      console.log("user is authenticated");
+    if (this.gameService.user == undefined) {
+      this.router.navigate(["/auth"]);
     }
   }
 
