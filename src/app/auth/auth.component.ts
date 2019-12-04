@@ -24,7 +24,7 @@ export class AuthComponent implements OnInit {
       this.gameService.initUser(input.value); // make it so that it moves on to navigation when init is completed
       this.toaster.clear();
       this.toaster.success("You're logged in");
-      setTimeout(() => this.router.navigate(["/"]), 500);
+      setTimeout(() => this.router.navigate(["/"]), 1000);
       console.log("navigated");
     } else {
       this.toaster.error("Enter a username");
