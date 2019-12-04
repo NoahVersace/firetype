@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { GameService } from "../game.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-auth",
@@ -10,7 +11,8 @@ import { GameService } from "../game.service";
 export class AuthComponent implements OnInit {
   constructor(
     private toaster: ToastrService,
-    private gameService: GameService
+    private gameService: GameService,
+    private router: Router
   ) {}
 
   ngOnInit() {}
@@ -21,6 +23,7 @@ export class AuthComponent implements OnInit {
       this.gameService.initUser(input.value);
       this.toaster.clear();
       this.toaster.success("You're logged in");
+      this.router.navigate(["/"]);
     } else {
       this.toaster.error("Enter a username");
     }

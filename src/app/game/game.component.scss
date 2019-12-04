@@ -1,0 +1,58 @@
+@import "src/variables.scss";
+header {
+  margin: 40px 50px 0 50px;
+
+  display: flex;
+  justify-content: space-between;
+  .chat-container {
+    .title {
+      font-size: 40px;
+      font-weight: 500;
+      color: $primaryC;
+      user-select: none;
+      cursor: default;
+    }
+
+    .chat-box {
+    }
+
+    .chat-hint {
+      margin-top: 20px;
+      font-size: 23px;
+      cursor: text;
+      height: 35px;
+      width: 270px;
+      position: relative;
+
+      .chat-label {
+        position: absolute;
+        left: 0;
+        pointer-events: none;
+      }
+
+      #chat-input {
+        height: 100%;
+        width: 100%;
+        font-size: 23px;
+        background: $backgroundC;
+        border: 0;
+        line-height: 100%;
+        outline: 0;
+
+        &:focus + .chat-label,
+        &:valid + .chat-label {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .info {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    path {
+      fill: white;
+    }
+  }
+}

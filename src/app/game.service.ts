@@ -5,6 +5,7 @@ import {
   DocumentSnapshot
 } from "@angular/fire/firestore";
 import { Observable } from "rxjs";
+
 export class User {
   id: string;
   name: string;
@@ -31,7 +32,14 @@ export class GameService {
       )
       .finally(() => {
         if (!this.user) {
-          this.firestore.collection("users").add({ name: name, x: 500 });
+          this.firestore
+            .collection("users")
+            .add({ name: name, x: 500 })
+            .then(cb =>
+              cb.get().then(doc => {
+                this.user = { id: doc.id, ...doc.data() } as User;
+              })
+            );
         }
       });
   }
