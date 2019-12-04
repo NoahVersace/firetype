@@ -1,0 +1,34 @@
+@import "src/variables.scss";
+.input-container {
+  position: absolute;
+  left: 50%;
+  top: 35%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .input-label {
+    color: $primaryC;
+    font-size: 48px;
+    cursor: default;
+  }
+
+  input {
+    width: 400px;
+    height: 80px;
+    border-radius: 16px;
+    border: 8px solid $primaryC;
+    background-color: rgb(255, 255, 255, 0.12);
+    outline: none;
+    color: $textC;
+    font-size: 32px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    cursor: text;
+  }
+}
+
+.input-container input:focus {
+  background-color: rgb(255, 255, 255, 0.22);
+}

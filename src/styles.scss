@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~ngx-toastr/toastr";
+@import "src/variables.scss";
+@import url("https://fonts.googleapis.com/css?family=Heebo:400,500&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Heebo", sans-serif;
+}
+
+body {
+  background-color: $backgroundC;
+}
+
+#toast-container > div {
+  background-color: $primaryC !important;
+  border-radius: 13px;
+}

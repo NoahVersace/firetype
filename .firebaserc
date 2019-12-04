@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "firetype-43128": {
+      "hosting": {
+        "firetype": [
+          "firetype-43128"
+        ]
+      }
+    }
+  }
+}
