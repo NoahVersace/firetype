@@ -35,7 +35,7 @@ export class GameComponent implements OnInit {
   }
 
   checkAuthentication() {
-    if (this.gameService.user == undefined) {
+    if (!this.gameService.isLoggedin) {
       this.router.navigate(["/auth"]);
     }
   }

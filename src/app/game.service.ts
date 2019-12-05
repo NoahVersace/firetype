@@ -21,6 +21,7 @@ export class GameService {
   constructor(private firestore: AngularFirestore) {}
 
   initUser(name: string) {
+    this.isLoggedin = true;
     this.firestore
       .collection("users")
       .ref.where("name", "==", name)
