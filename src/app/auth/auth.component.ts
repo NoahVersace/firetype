@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { GameService } from "../game.service";
 import { Router } from "@angular/router";
-import { typeWithParameters } from "@angular/compiler/src/render3/util";
 
 @Component({
   selector: "app-auth",
@@ -21,10 +20,9 @@ export class AuthComponent implements OnInit {
   enterPressed() {
     let input: any = document.getElementById("name-input");
     if (input.value.length > 0) {
-      this.gameService.initUser(input.value); // make it so that it moves on to navigation when init is completed
+      this.gameService.initUser(input.value);
       this.toaster.clear();
       this.toaster.success("You're logged in");
-      this.router.navigate(["/"]);
       console.log("navigated");
     } else {
       this.toaster.error("Enter a username");
