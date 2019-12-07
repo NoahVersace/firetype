@@ -30,6 +30,7 @@ export class GameComponent implements OnInit, AfterViewInit {
   lastX;
   user;
   players: Observable<any[]>;
+  playerList: any[] = new Array();
 
   constructor(
     private gameService: GameService,
@@ -38,16 +39,37 @@ export class GameComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
-    let cooldown = 500;
     this.players.subscribe(players =>
-      setTimeout(() => {
-        players.forEach((player, index) => {
-          console.log(index + " " + player.x);
-          document.getElementById("player-" + index).style.left =
-            player.x + "%";
-          cooldown = 0;
+      players.forEach(player => {
+        if (!this.playerList.some(item => item.name == player.name)) {
+          if (player.isActive == true) {
+            this.playerList.push(player);
+            setTimeout(() => {
+              if (document.getElementById("player-" + player.name)) {
+                document.getElementById("player-" + player.name).style.left =
+                  player.x + "%";
+              }
+            }, 0);
+          }
+        } else {
+          if (player.isActive == false) {
+            this.playerList = this.playerList.filter(
+              playerObj => playerObj.name !== player.name
+            );
+          }
+        }
+      })
+    );
+
+    this.players.subscribe(list =>
+      list.forEach(player => {
+        this.playerList.forEach(listItem => {
+          if (document.getElementById("player-" + player.name)) {
+            document.getElementById("player-" + player.name).style.left =
+              player.x + "%";
+          }
         });
-      }, cooldown)
+      })
     );
   }
 
@@ -66,13 +88,6 @@ export class GameComponent implements OnInit, AfterViewInit {
       .doc(userId)
       .valueChanges();
 
-    this.players = this.firestore
-      .collection<User>("users", ref => ref.where("isActive", "==", true))
-      .valueChanges()
-      .pipe(
-        map(list => list.filter(cb => cb.name != this.gameService.user.name))
-      );
-
     this.x = new BehaviorSubject(userX);
     this.lastX = userX;
     this.x.subscribe(x => {
@@ -80,7 +95,16 @@ export class GameComponent implements OnInit, AfterViewInit {
     });
 
     setInterval(() => this.movePlayer(), 10);
-    setInterval(() => this.updatePlayerLocation(), 1000);
+    setInterval(() => this.updatePlayerLocation(), 300);
+
+    this.players = this.firestore
+      .collection<User>("users")
+      .valueChanges()
+      .pipe(
+        map(list => {
+          return list.filter(cb => cb.name != this.gameService.user.name);
+        })
+      );
 
     window.addEventListener("beforeunload", () =>
       this.gameService.setActive(false)
@@ -99,10 +123,10 @@ export class GameComponent implements OnInit, AfterViewInit {
 
   movePlayer() {
     let distance = 0.5;
-    if (this.goingLeft) {
+    if (this.goingLeft && this.x.value - distance >= 0) {
       this.x.next(this.x.value - distance);
       this.gameService.user.x = this.gameService.user.x - distance;
-    } else if (this.goingRight) {
+    } else if (this.goingRight && this.x.value + distance <= 100) {
       this.x.next(this.x.value + distance);
       this.gameService.user.x = this.gameService.user.x + distance;
     }
@@ -117,32 +141,41 @@ export class GameComponent implements OnInit, AfterViewInit {
   commitText() {
     let text: string = (document.getElementById("chat-input") as any).value;
     if (text == "") {
+      // document.getElementById("chat-input").blur();
       return;
+    } else {
+      (document.getElementById("chat-input") as any).value = "";
+      // document.getElementById("chat-input").blur();
+
+      let messgae: Message = {
+        text: text,
+        user: this.gameService.user,
+        date: new Date()
+      };
+
+      this.firestore.collection("chat").add(messgae);
     }
-
-    (document.getElementById("chat-input") as any).value = "";
-    document.getElementById("chat-input").blur();
-
-    let messgae: Message = {
-      text: text,
-      user: this.gameService.user,
-      date: new Date()
-    };
-
-    this.firestore.collection("chat").add(messgae);
   }
 
   @HostListener("document:keydown", ["$event"])
   handleKeyDown(event: KeyboardEvent) {
-    console.log("true");
-    // console.log(event);^
-    if (event.key == "Enter") {
-      document.getElementById("chat-input").focus();
-    } else if (event.key == "a") {
-      this.goingLeft = true;
-    } else if (event.key == "d") {
-      // this.x.next(30);
-      this.goingRight = true;
+    if (document.activeElement != document.getElementById("chat-input")) {
+      if (event.key == "Enter") {
+        console.log("here");
+        document.getElementById("chat-input").focus();
+      }
+    } else {
+      if (event.key == "Enter") {
+        document.getElementById("chat-input").blur();
+      }
+    }
+
+    if (document.activeElement != document.getElementById("chat-input")) {
+      if (event.key == "a") {
+        this.goingLeft = true;
+      } else if (event.key == "d") {
+        this.goingRight = true;
+      }
     }
   }
   @HostListener("document:keyup", ["$event"])

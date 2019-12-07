@@ -1,4 +1,5 @@
 @import "src/variables.scss";
+
 .container {
   display: flex;
   flex-direction: column;
@@ -11,6 +12,7 @@ header {
 
   display: flex;
   justify-content: space-between;
+
   .chat-container {
     width: 250px; //make width so text collapess?
     .title {
@@ -74,12 +76,11 @@ section {
     transform: translateY(-70px);
     height: 20px;
     width: calc(100% - 90px);
-    background-color: purple;
     position: relative;
 
     .character {
       position: absolute;
-      left: 0%;
+      left: 50%;
       bottom: 0;
       background-color: white;
       border: 8px solid $primaryC;

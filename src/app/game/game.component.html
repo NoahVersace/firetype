@@ -14,7 +14,7 @@
         <input
           id="chat-input"
           type="text"
-          (keyup.enter)="commitText()"
+          (keydown.enter)="commitText()"
           required
         />
         <label for="chat-input" class="chat-label">
@@ -43,8 +43,8 @@
         </div>
       </div>
       <div
-        *ngFor="let player of players | async; let i = index"
-        id="player-{{ i }}"
+        *ngFor="let player of playerList"
+        id="player-{{ player.name }}"
         class="character others"
       >
         <div class="name-line"></div>
