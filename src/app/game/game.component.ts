@@ -6,7 +6,7 @@ import { AngularFirestore } from "@angular/fire/firestore";
 import { Router } from "@angular/router";
 import { keyframes } from "@angular/animations";
 import { Key } from "protractor";
-import { filter, map, last } from "rxjs/operators";
+import { filter, map, last, first, endWith } from "rxjs/operators";
 import { analytics } from "firebase";
 
 export class Message {
@@ -39,6 +39,13 @@ export class GameComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
+    this.chat.subscribe(x =>
+      setTimeout(
+        () => (document.getElementById("chat-box").scrollTop = 99999),
+        0
+      )
+    );
+
     this.players.subscribe(players =>
       players.forEach(player => {
         if (!this.playerList.some(item => item.name == player.name)) {
@@ -77,7 +84,7 @@ export class GameComponent implements OnInit, AfterViewInit {
     this.checkAuthentication();
 
     this.chat = this.firestore
-      .collection<Message>("chat", ref => ref.orderBy("date").limitToLast(7))
+      .collection<Message>("chat", ref => ref.orderBy("date").limitToLast(50))
       .valueChanges();
 
     let userId = this.gameService.user.id;
@@ -106,9 +113,10 @@ export class GameComponent implements OnInit, AfterViewInit {
         })
       );
 
-    window.addEventListener("beforeunload", () =>
-      this.gameService.setActive(false)
-    );
+    window.addEventListener("beforeunload", event => {
+      event.returnValue = "";
+      this.gameService.setActive(false);
+    });
   }
 
   updatePlayerLocation() {
@@ -130,6 +138,10 @@ export class GameComponent implements OnInit, AfterViewInit {
       this.x.next(this.x.value + distance);
       this.gameService.user.x = this.gameService.user.x + distance;
     }
+  }
+
+  redirectToNoah() {
+    window.open("https://noahsalvi.ch");
   }
 
   checkAuthentication() {
@@ -159,9 +171,11 @@ export class GameComponent implements OnInit, AfterViewInit {
 
   @HostListener("document:keydown", ["$event"])
   handleKeyDown(event: KeyboardEvent) {
+    if (!this.gameService.user.isActive) {
+      this.gameService.setActive(true);
+    }
     if (document.activeElement != document.getElementById("chat-input")) {
       if (event.key == "Enter") {
-        console.log("here");
         document.getElementById("chat-input").focus();
       }
     } else {

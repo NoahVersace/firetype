@@ -19,3 +19,27 @@ body {
   background-color: $primaryC !important;
   border-radius: 13px;
 }
+
+#media-blocker {
+  display: none;
+  position: absolute;
+}
+
+@media (max-width: 450px) {
+  #media-blocker {
+    left: 0;
+    top: 0;
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: $backgroundC;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .media-text {
+      font-weight: 500;
+      font-size: 30px;
+      text-align: center;
+    }
+  }
+}

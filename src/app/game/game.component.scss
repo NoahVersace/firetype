@@ -23,7 +23,9 @@ header {
       cursor: default;
     }
 
-    .chat-box {
+    #chat-box {
+      overflow-y: auto;
+      max-height: 190px;
     }
 
     .chat-hint {
@@ -33,11 +35,16 @@ header {
       height: 35px;
       width: 270px;
       position: relative;
+      user-select: none;
 
       .chat-label {
         position: absolute;
         left: 0;
         pointer-events: none;
+
+        &:required {
+          box-shadow: none;
+        }
       }
 
       #chat-input {
@@ -93,12 +100,18 @@ section {
       }
 
       .name {
+        user-select: none;
         text-align: center;
         font-size: 18px;
         position: absolute;
         transform: translate(-50%, -50px);
         left: 50%;
       }
+    }
+
+    #player.character {
+      background-color: $primaryC;
+      border-color: white;
     }
   }
 

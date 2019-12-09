@@ -4,7 +4,7 @@
       <span class="title">
         Chat
       </span>
-      <div class="chat-box">
+      <div id="chat-box">
         <span *ngFor="let message of chat | async">
           {{ message.user.name }}: {{ message.text }}
           <br />
@@ -23,6 +23,7 @@
       </div>
     </div>
     <svg
+      (click)="redirectToNoah()"
       class="info"
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -47,7 +48,6 @@
         id="player-{{ player.name }}"
         class="character others"
       >
-        <div class="name-line"></div>
         <div class="name">
           {{ player.name }}
         </div>
