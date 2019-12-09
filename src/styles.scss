@@ -21,11 +21,16 @@ body {
 }
 
 #media-blocker {
+  height: 0;
+  width: 0;
   display: none;
   position: absolute;
 }
 
 @media (max-width: 450px) {
+  .app {
+    display: none;
+  }
   #media-blocker {
     left: 0;
     top: 0;
