@@ -6,7 +6,8 @@
       </span>
       <div id="chat-box">
         <span *ngFor="let message of chat | async">
-          {{ message.user.name }}: {{ message.text }}
+          <span style="font-weight: bold;">{{ message.user.name }}:</span>
+          {{ message.text }}
           <br />
         </span>
       </div>
